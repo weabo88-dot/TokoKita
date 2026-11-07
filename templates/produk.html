@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Produk - TokoKita</title>
+</head>
+<body>
+    <h1>Daftar Produk TokoKita</h1>
+
+    <ol>
+        <li>
+            Kaos Basic - Rp75.000
+            <a href="{{ url_for('detail_produk', id=1) }}">Detail</a>
+        </li>
+        <li>
+            Hoodie Casual - Rp150.000
+            <a href="{{ url_for('detail_produk', id=2) }}">Detail</a>
+        </li>
+        <li>
+            Tas Selempang - Rp95.000
+            <a href="{{ url_for('detail_produk', id=3) }}">Detail</a>
+        </li>
+        <li>
+            Topi Casual - Rp50.000
+            <a href="{{ url_for('detail_produk', id=4) }}">Detail</a>
+        </li>
+    </ol>
+
+    <a href="{{ url_for('beranda') }}">Kembali ke Beranda</a>
+</body>
+</html>
