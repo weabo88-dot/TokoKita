@@ -1,17 +1,26 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Tentang - TokoKita</title>
-</head>
-<body>
-    <h1>Tentang TokoKita</h1>
+{% extends "base.html" %}
 
-    <p>
-        TokoKita adalah website simulasi toko online
-        yang dikembangkan menggunakan framework Flask.
-    </p>
+{% block title %}Tentang - TokoKita{% endblock %}
 
-    <a href="{{ url_for('beranda') }}">Kembali ke Beranda</a>
-</body>
-</html>
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+
+        <h1 class="fw-bolder mb-4">Tentang TokoKita</h1>
+
+        <p>
+            TokoKita merupakan website simulasi toko online
+            sederhana yang dibuat untuk menampilkan katalog
+            produk dan menyediakan fitur pengecekan username.
+        </p>
+
+        <p>
+            Website ini dikembangkan menggunakan Python,
+            framework Flask, HTML, Bootstrap, dan template Jinja2.
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

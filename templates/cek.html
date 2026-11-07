@@ -1,15 +1,42 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Hasil Pengecekan Username</title>
-</head>
-<body>
-    <h1>Hasil Pengecekan Username</h1>
+{% extends "base.html" %}
 
-    <p>Username: {{ username }}</p>
-    <p>{{ pesan }}</p>
+{% block title %}Hasil Pengecekan - TokoKita{% endblock %}
 
-    <a href="{{ url_for('beranda') }}">Kembali ke Beranda</a>
-</body>
-</html>
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+
+        <h1 class="fw-bolder mb-4">Hasil Pengecekan Username</h1>
+
+        {% if not valid %}
+
+            <div class="alert alert-warning">
+                Username tidak valid. Minimal 4 karakter.
+            </div>
+
+        {% elif tersedia %}
+
+            <div class="alert alert-success">
+                Username <strong>{{ username }}</strong>
+                tersedia dan dapat digunakan.
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-danger">
+                Username <strong>{{ username }}</strong>
+                sudah digunakan.
+            </div>
+
+        {% endif %}
+
+        <a href="{{ url_for('registrasi') }}"
+           class="btn btn-secondary">
+            Kembali ke Registrasi
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}

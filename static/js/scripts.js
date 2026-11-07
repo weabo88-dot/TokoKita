@@ -5,3 +5,19 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("form-registrasi");
+
+    if (form) {
+        form.addEventListener("submit", function (event) {
+            const username = document
+                .getElementById("username")
+                .value.trim();
+
+            if (username.length < 4) {
+                event.preventDefault();
+                alert("Username minimal harus 4 karakter!");
+            }
+        });
+    }
+});

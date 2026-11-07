@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Profil Pelanggan - TokoKita{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+
+        <h1 class="fw-bolder mb-4">Profil Pelanggan</h1>
+
+        {% if ditemukan %}
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h4>{{ username|title }}</h4>
+
+                    <p>Status: Terdaftar sebagai pelanggan TokoKita.</p>
+
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="alert alert-danger">
+                Pelanggan dengan username tersebut tidak ditemukan.
+            </div>
+
+        {% endif %}
+
+        <a href="{{ url_for('pelanggan') }}"
+           class="btn btn-secondary mt-3">
+            Kembali ke Daftar Pelanggan
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}

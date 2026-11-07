@@ -1,31 +1,52 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Produk - TokoKita</title>
-</head>
-<body>
-    <h1>Daftar Produk TokoKita</h1>
+{% extends "base.html" %}
 
-    <ol>
-        <li>
-            Kaos Basic - Rp75.000
-            <a href="{{ url_for('detail_produk', id=1) }}">Detail</a>
-        </li>
-        <li>
-            Hoodie Casual - Rp150.000
-            <a href="{{ url_for('detail_produk', id=2) }}">Detail</a>
-        </li>
-        <li>
-            Tas Selempang - Rp95.000
-            <a href="{{ url_for('detail_produk', id=3) }}">Detail</a>
-        </li>
-        <li>
-            Topi Casual - Rp50.000
-            <a href="{{ url_for('detail_produk', id=4) }}">Detail</a>
-        </li>
-    </ol>
+{% block title %}Produk - TokoKita{% endblock %}
 
-    <a href="{{ url_for('beranda') }}">Kembali ke Beranda</a>
-</body>
-</html>
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+
+        <h1 class="fw-bolder mb-4">Katalog Produk</h1>
+
+        <p class="text-muted">
+            Jumlah produk tersedia: {{ produk|length }}
+        </p>
+
+        <div class="row">
+
+            {% for id, item in produk.items() %}
+
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            {{ item.nama|title }}
+                        </h5>
+
+                        <p class="text-muted">
+                            {{ item.kategori }}
+                        </p>
+
+                        <h6 class="text-primary">
+                            Rp{{ "{:,.0f}".format(item.harga) }}
+                        </h6>
+
+                        <a href="{{ url_for('detail_produk', id=id) }}"
+                           class="btn btn-dark mt-2">
+                            Lihat Detail
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+

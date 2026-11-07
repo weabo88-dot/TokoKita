@@ -1,18 +1,14 @@
-
 from flask import Flask, render_template, redirect, url_for, abort, request
 
 app = Flask(__name__)
 
-# =====================================
-# DATA PRODUK
-# =====================================
-
+# Data produk
 PRODUK = {
     1: {
         "nama": "Kaos Basic",
         "harga": 75000,
         "kategori": "Fashion",
-        "deskripsi": "Kaos basic nyaman untuk aktivitas sehari-hari."
+        "deskripsi": "Kaos basic nyaman untuk penggunaan sehari-hari."
     },
     2: {
         "nama": "Hoodie Casual",
@@ -24,7 +20,7 @@ PRODUK = {
         "nama": "Tas Selempang",
         "harga": 95000,
         "kategori": "Aksesoris",
-        "deskripsi": "Tas selempang praktis untuk kebutuhan sehari-hari."
+        "deskripsi": "Tas selempang praktis untuk aktivitas sehari-hari."
     },
     4: {
         "nama": "Topi Casual",
@@ -34,13 +30,11 @@ PRODUK = {
     }
 }
 
-# Username yang sudah terdaftar
+# Data username pelanggan
 USERNAME_TERDAFTAR = ["shavira", "galih", "nopal", "amsal"]
 
 
-# =====================================
-# 1. ROUTING STATIS
-# =====================================
+# ROUTING STATIS
 
 @app.route("/")
 @app.route("/beranda")
@@ -55,7 +49,7 @@ def tentang():
 
 @app.route("/produk")
 def produk():
-    return render_template("produk.html")
+    return render_template("produk.html", produk=PRODUK)
 
 
 @app.route("/kontak")
@@ -63,37 +57,70 @@ def kontak():
     return render_template("kontak.html")
 
 
-# =====================================
-# 2. DYNAMIC ROUTING CEK USERNAME
-# =====================================
-
-@app.route("/cek/<username>")
-def cek_username(username):
-    username = username.strip().lower()
-
-    if len(username) < 4:
-        return render_template(
-            "cek.html",
-            username=username,
-            pesan="Username tidak valid. Minimal 4 karakter."
-        ), 400
-
-    elif username in USERNAME_TERDAFTAR:
-        pesan = f"Username {username} sudah digunakan."
-
-    else:
-        pesan = f"Username {username} tersedia."
-
+@app.route("/pelanggan")
+def pelanggan():
     return render_template(
-        "cek.html",
-        username=username,
-        pesan=pesan
+        "pelanggan.html",
+        pelanggan=USERNAME_TERDAFTAR
     )
 
 
-# =====================================
-# 3. DYNAMIC ROUTING PROFIL PELANGGAN
-# =====================================
+@app.route("/registrasi")
+def registrasi():
+    return render_template("registrasi.html")
+
+
+# DETAIL PRODUK DENGAN INTEGER CONVERTER
+
+@app.route("/produk/<int:id>")
+def detail_produk(id):
+    if id not in PRODUK:
+        abort(404)
+
+    return render_template(
+        "detailprodu.html",
+        item=PRODUK[id],
+        id=id
+    )
+
+
+# PROSES PENGECEKAN USERNAME
+
+def proses_cek_username(username):
+    username = username.strip().lower()
+
+    valid = len(username) >= 4
+    tersedia = valid and username not in USERNAME_TERDAFTAR
+
+    status_code = 200 if valid else 400
+
+    return (
+        render_template(
+            "cek.html",
+            username=username,
+            valid=valid,
+            tersedia=tersedia
+        ),
+        status_code
+    )
+
+
+# DYNAMIC ROUTING USERNAME
+
+@app.route("/cek/<username>")
+def cek_username(username):
+    return proses_cek_username(username)
+
+
+# QUERY STRING
+
+@app.route("/cek")
+def cek_query():
+    username = request.args.get("u", "")
+    return proses_cek_username(username)
+
+
+# PROFIL PELANGGAN
 
 @app.route("/user/<username>")
 def profil_user(username):
@@ -102,87 +129,28 @@ def profil_user(username):
     if len(username) < 4:
         return "Username tidak valid. Minimal 4 karakter.", 400
 
-    if username not in USERNAME_TERDAFTAR:
-        return "Pelanggan tidak ditemukan.", 404
-
-    return f"""
-        <h1>Profil Pelanggan TokoKita</h1>
-        <p>Username: {username}</p>
-        <p>Status: Terdaftar</p>
-        <a href="{url_for('beranda')}">Kembali ke Beranda</a>
-    """
-
-
-# =====================================
-# 4. INTEGER CONVERTER DETAIL PRODUK
-# =====================================
-
-@app.route("/produk/<int:id>")
-def detail_produk(id):
-    if id not in PRODUK:
-        abort(404)
-
-    item = PRODUK[id]
-
-    return f"""
-        <h1>Detail Produk TokoKita</h1>
-        <h2>{item['nama']}</h2>
-        <p>Kategori: {item['kategori']}</p>
-        <p>Harga: Rp{item['harga']:,}</p>
-        <p>Deskripsi: {item['deskripsi']}</p>
-        <a href="{url_for('produk')}">Kembali ke Produk</a>
-    """
-
-
-# =====================================
-# 5. PENGECEKAN USERNAME QUERY STRING
-# =====================================
-
-@app.route("/cek")
-def cek_query():
-    username = request.args.get("u", "").strip().lower()
-
-    if len(username) < 4:
-        return render_template(
-            "cek.html",
-            username=username,
-            pesan="Username tidak valid. Minimal 4 karakter."
-        ), 400
-
-    elif username in USERNAME_TERDAFTAR:
-        pesan = f"Username {username} sudah digunakan."
-
-    else:
-        pesan = f"Username {username} tersedia."
+    ditemukan = username in USERNAME_TERDAFTAR
 
     return render_template(
-        "cek.html",
+        "user.html",
         username=username,
-        pesan=pesan
-    )
+        ditemukan=ditemukan
+    ), 200 if ditemukan else 404
 
 
-# =====================================
-# 6. REDIRECT
-# =====================================
+# REDIRECT
 
 @app.route("/home")
 def home():
     return redirect(url_for("beranda"))
 
 
-# =====================================
-# 7. CUSTOM ERROR 404
-# =====================================
+# CUSTOM ERROR 404
 
 @app.errorhandler(404)
 def halaman_tidak_ditemukan(error):
     return render_template("404.html"), 404
 
-
-# =====================================
-# MENJALANKAN APLIKASI
-# =====================================
 
 if __name__ == "__main__":
     app.run(debug=True)

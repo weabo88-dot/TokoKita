@@ -1,16 +1,27 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Kontak - TokoKita</title>
-</head>
-<body>
-    <h1>Kontak TokoKita</h1>
+{% block title %}Kontak - TokoKita{% endblock %}
 
-    <p>Email: tokokita@gmail.com</p>
-    <p>Layanan: Informasi produk dan pelanggan.</p>
+{% block content %}
 
-    <a href="{{ url_for('beranda') }}">Kembali ke Beranda</a>
-</body>
-</html>
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+
+        <h1 class="fw-bolder mb-4">Hubungi Kami</h1>
+
+        <p>
+            Terima kasih telah mengunjungi TokoKita.
+        </p>
+
+        <p>Email: tokokita@gmail.com</p>
+
+        <p>Whatapp : 085645649366</p>
+
+        <p>instagram : AMBATUSELL </p>
+
+        <p>Website: TokoKita</p>
+
+    </div>
+</section>
+
+{% endblock %}

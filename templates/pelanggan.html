@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Pelanggan - TokoKita{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+
+        <h1 class="fw-bolder mb-4">Daftar Pelanggan</h1>
+
+        <p>Total pelanggan: {{ pelanggan|length }}</p>
+
+        <div class="list-group">
+
+            {% for username in pelanggan %}
+
+            <a href="{{ url_for('profil_user', username=username) }}"
+               class="list-group-item list-group-item-action">
+
+                {{ username|title }}
+
+            </a>
+
+            {% else %}
+
+            <p>Belum ada pelanggan terdaftar.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
